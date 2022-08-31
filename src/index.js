@@ -3,13 +3,13 @@ const { ExpressPeerServer } = require('peer');
 const port = 9000
 
 /* CONTROLADOR DE LOGS EN ARCHIVO DE LOGS -----------------------------------------------------*/
-var fs = require('fs'); var util = require('util');
-var log_file = fs.createWriteStream('/var/log/peer-server/node-peer-server.log', {flags : 'w'});
-var log_stdout = process.stdout;
-console.log = function(d) { //
-  log_file.write(util.format(d) + '\n');
-  log_stdout.write(util.format(d) + '\n');
- };
+/*   var fs = require('fs'); var util = require('util');
+  var log_file = fs.createWriteStream('/var/log/peer-server/node-peer-server.log', {flags : 'w'});
+  var log_stdout = process.stdout;
+  console.log = function(d) { //
+    log_file.write(util.format(d) + '\n');
+    log_stdout.write(util.format(d) + '\n');
+  }; */
 /* --------------------------------------------------------------------------------------------*/
 
 /* ----------------------------------------------------------------------------------------------
@@ -24,6 +24,8 @@ console.log = function(d) { //
 const app = express();
 const server = app.listen(port);
 console.log("Iniciando servidor puerto: "+port)
+
+app.use('/test', express.static(__dirname + '/public'));
 
 app.get('/', (req, res, next) => res.send('Soy peerServer'));
 
