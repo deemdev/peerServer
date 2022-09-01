@@ -17,7 +17,6 @@
     const miIdNode = document.getElementById("miidShow")
     miIdNode.innerHTML = id
     console.log('My peer ID is: ' + id);
-
     /* CODE */
   });
 
@@ -118,18 +117,44 @@
     }
   }
 
+  let latencyPromedio = 0;
+  let moreLatency = 0 ;
+  let countMsjsLatency= 0;
+  let totalLatency = 0;
+
   function printMessajeRecived(text){
-    const messageRecivedNode = document.getElementById("messaguerecivedid")
-    messageRecivedNode.innerHTML = text
 
-    const TimeStampOut =parseInt(text.split("|")[1]) 
-    const TimeStampIn = new Date().getTime()
+    if(text.indexOf("xxx") != -1 ){
 
-    const TimeInTransmision = TimeStampIn - TimeStampOut
-    printLatenci(TimeInTransmision)
+      const codeMsj = text.split("|")[0];
+      const TimeStampOut =parseInt(text.split("|")[1]);
+      const TimeStampIn = new Date().getTime();
+      let difTime = TimeStampIn - TimeStampOut;
+      if(difTime < 0) difTime*-1
+      countMsjsLatency = countMsjsLatency + 1;
 
+      totalLatency = totalLatency+difTime;
+      latencyPromedio = totalLatency/countMsjsLatency
 
-    console.log("Tiempo latencia: "+ TimeInTransmision)
+      if(difTime > moreLatency) moreLatency = difTime
+
+      console.log("latencyPromedio: ",latencyPromedio);
+      console.log("moreLatency: ",moreLatency);
+
+      const viwValue = document.getElementById("latencyFull100msgs")
+      const latencyMore = document.getElementById("latencyMore")
+      viwValue.innerHTML = latencyPromedio
+      latencyMore.innerHTML = moreLatency
+
+    }else{
+      const messageRecivedNode = document.getElementById("messaguerecivedid")
+      messageRecivedNode.innerHTML = text
+      const TimeStampOut =parseInt(text.split("|")[1]) 
+      const TimeStampIn = new Date().getTime()
+      const TimeInTransmision = TimeStampIn - TimeStampOut
+      printLatenci(TimeInTransmision)
+      console.log("Tiempo latencia: "+ TimeInTransmision)
+    }
   }
 
 
@@ -144,8 +169,18 @@
     nodeShowLatency.innerHTML = TimeInTransmision + " ms"
   }
 
+
+
   /* CONSTRUIR UN MEDIDOR DE UN  */
   function startTestLatencyFull(){
-
-
+    if(conGeneral != null){
+      for (var i = 0; i < 100; i++) {
+        const TimeStamp = new Date().getTime()
+        const payToSend = "xxx"+i+"|"+TimeStamp
+        conGeneral.send(payToSend)
+      }
+    }
+    else{
+      console.log("No hay una funcion")
+    }
   }
