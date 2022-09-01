@@ -104,11 +104,11 @@
   function sendMessage(){
     if(conGeneral != null){
       const message = document.getElementById("message").value
-
-      const timeStamp = new Date().getTime() + ""
-      const msgToSend = message +" |"+timeStamp
+      const timeStamp = new Date()
+      const msgToSend = message +" |"+timeStamp.getTime()
 
       console.log("Se enviará el mensaje: "+ msgToSend)
+      document.getElementById("timeSend").innerHTML = timeStamp.getMinutes()+":"+timeStamp.getSeconds()+":"+timeStamp.getMilliseconds()
 
       conGeneral.send(msgToSend)
     }else{
@@ -130,7 +130,7 @@
       const TimeStampOut =parseInt(text.split("|")[1]);
       const TimeStampIn = new Date().getTime();
       let difTime = TimeStampIn - TimeStampOut;
-      if(difTime < 0) difTime*-1
+      if(difTime < 0) difTime = difTime*-1
       countMsjsLatency = countMsjsLatency + 1;
 
       totalLatency = totalLatency+difTime;
@@ -154,11 +154,15 @@
       }
 
     }else{
+
+      const TimeStampIn = new Date()
+      document.getElementById("timeReceived").innerHTML = TimeStampIn.getMinutes()+":"+TimeStampIn.getSeconds()+":"+TimeStampIn.getMilliseconds()
+
       const messageRecivedNode = document.getElementById("messaguerecivedid")
-      messageRecivedNode.innerHTML = text
+      messageRecivedNode.innerHTML = text.split("|")[0]
       const TimeStampOut =parseInt(text.split("|")[1]) 
-      const TimeStampIn = new Date().getTime()
-      const TimeInTransmision = TimeStampIn - TimeStampOut
+      
+      const TimeInTransmision = TimeStampIn.getTime() - TimeStampOut
       printLatenci(TimeInTransmision)
       console.log("Tiempo latencia: "+ TimeInTransmision)
     }
