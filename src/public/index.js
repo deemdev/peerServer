@@ -143,8 +143,15 @@
 
       const viwValue = document.getElementById("latencyFull100msgs")
       const latencyMore = document.getElementById("latencyMore")
-      viwValue.innerHTML = latencyPromedio
-      latencyMore.innerHTML = moreLatency
+      viwValue.innerHTML = "Promedio: "+latencyPromedio
+      latencyMore.innerHTML = "Mayor: "+moreLatency
+
+      if(codeMsj == "xxx100"){
+         latencyPromedio = 0;
+         moreLatency = 0 ;
+         countMsjsLatency= 0;
+         totalLatency = 0;
+      }
 
     }else{
       const messageRecivedNode = document.getElementById("messaguerecivedid")
@@ -174,7 +181,7 @@
   /* CONSTRUIR UN MEDIDOR DE UN  */
   function startTestLatencyFull(){
     if(conGeneral != null){
-      for (var i = 0; i < 100; i++) {
+      for (var i = 0; i <= 100; i++) {
         const TimeStamp = new Date().getTime()
         const payToSend = "xxx"+i+"|"+TimeStamp
         conGeneral.send(payToSend)
